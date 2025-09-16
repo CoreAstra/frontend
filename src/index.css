@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 218 20% 13%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 218 20% 13%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 218 20% 13%;
+
+    /* CoreAstra Brand Colors */
+    --primary: 213 100% 34%;      /* #0D47A1 Trustworthy Blue */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 122 39% 19%;     /* #2E7D32 Success Green */
+    --secondary-foreground: 0 0% 100%;
+
+    --accent: 38 100% 50%;        /* #FF8F00 Action Orange */
+    --accent-foreground: 0 0% 100%;
+
+    /* Status Colors */
+    --danger: 354 70% 54%;        /* #D32F2F Red for pending/urgent */
+    --danger-light: 354 100% 97%;  /* #FFEBEE Light red background */
+    --danger-foreground: 0 0% 100%;
+
+    --warning: 32 95% 48%;        /* #F57C00 Orange for in-progress */
+    --warning-light: 36 100% 94%;  /* #FFF3E0 Light orange background */
+    --warning-foreground: 0 0% 100%;
+
+    --success: 123 39% 20%;       /* #388E3C Green for resolved */
+    --success-light: 122 39% 93%;  /* #E8F5E9 Light green background */
+    --success-foreground: 0 0% 100%;
+
+    /* Neutral Grays */
+    --neutral-100: 0 0% 96%;      /* #F5F5F5 Light background */
+    --neutral-500: 0 0% 62%;      /* #9E9E9E Medium text/icons */
+    --neutral-900: 0 0% 13%;      /* #212121 Dark text */
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 62%;
+
+    --destructive: 354 70% 54%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 213 100% 34%;
+
+    --radius: 0.5rem;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+    --gradient-card: linear-gradient(180deg, hsl(var(--card)), hsl(var(--neutral-100)));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(32 100% 60%));
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(var(--neutral-900) / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(var(--neutral-900) / 0.1), 0 2px 4px -1px hsl(var(--neutral-900) / 0.06);
+    --shadow-lg: 0 10px 15px -3px hsl(var(--neutral-900) / 0.1), 0 4px 6px -2px hsl(var(--neutral-900) / 0.05);
+    --shadow-hero: 0 20px 25px -5px hsl(var(--primary) / 0.1), 0 10px 10px -5px hsl(var(--primary) / 0.04);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
