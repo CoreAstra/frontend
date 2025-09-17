@@ -1,0 +1,129 @@
+<% layout("layouts/mainLayout") %>
+
+<body>
+<div class="row">
+    <div class="col-8 offset-2">
+    <h4>Register a Complaint</h4> <br>
+    <form action="/complaints" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Complaint Title</label>
+            <input name="complaint[title]" placeholder="Ex: Streetlight not working" type="text" class="form-control" required/>
+            <div class="valid-feedback">You have entered the 'Complaint Title'</div>
+            <div class="invalid-feedback">Please enter the 'Complaint Title' to proceed</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="complaint[description]" placeholder="Ex: The streetlight near my house has not been working for 5 days." class="form-control" required></textarea>
+            <div class="valid-feedback">You have entered the 'Description'</div>
+            <div class="invalid-feedback">Please enter the 'Description' to proceed</div>
+        </div>
+
+        <!-- Category -->
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select name="complaint[category]" class="form-control" required>
+                <option value="">Select Category</option>
+                <option value="Streetlight">Streetlight</option>
+                <option value="Garbage">Garbage</option>
+                <option value="Water Supply">Water Supply</option>
+                <option value="Other">Other</option>
+            </select>
+            <div class="invalid-feedback">Please select a category</div>
+        </div>
+
+        <!-- Image -->
+        <div class="mb-3">
+            <label for="image" class="form-label">Upload Image</label>
+            <input name="complaint[image]" type="file" class="form-control"/>
+        </div>
+
+        <!-- Location -->
+        <div class="row">
+            <div class="mb-3 col-md-8">
+                <label for="location" class="form-label">Location</label>
+                <input id="locationInput" placeholder="Ex: MG Road, Bangalore" type="text" class="form-control" required/>
+
+                <!-- Hidden fields for schema -->
+                <input type="hidden" name="complaint[location][address]" id="addressField">
+                <input type="hidden" name="complaint[location][coordinates][]" id="longitude">
+                <input type="hidden" name="complaint[location][coordinates][]" id="latitude">
+                <input type="hidden" name="complaint[location][type]" value="Point">
+
+                <div class="valid-feedback">You have entered the 'Location'</div>
+                <div class="invalid-feedback">Please enter the 'Location' to proceed</div>
+            </div>
+            <div class="mb-3 col-md-4 d-flex align-items-end">
+                <button type="button" id="currentLocationBtn" class="btn btn-outline-primary w-100">Use Current Location</button>
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div id="map" style="height: 300px; border-radius: 10px; margin-bottom: 20px;"></div>
+
+        <br>
+        <button class="btn btn-dark add-btn">Submit Complaint</button>
+    </form>
+    </div>
+</div>
+
+<!-- Mapbox JS -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet"/>
+
+<script>
+    mapboxgl.accessToken = "<%= process.env.MAP_TOKEN %>";
+
+    const map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/mapbox/streets-v11",
+        center: [77.5946, 12.9716], // Bangalore default
+        zoom: 12
+    });
+
+    let marker;
+    const locationInput = document.getElementById("locationInput");
+
+    // Search location
+    locationInput.addEventListener("change", async () => {
+        const query = locationInput.value;
+        if (!query) return;
+
+        const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxgl.accessToken}`);
+        const data = await response.json();
+
+        if (data.features.length > 0) {
+            const coords = data.features[0].center; // [lng, lat]
+            const address = data.features[0].place_name;
+
+            // Fill hidden fields
+            document.getElementById("longitude").value = coords[0];
+            document.getElementById("latitude").value = coords[1];
+            document.getElementById("addressField").value = address;
+
+            if (marker) marker.remove();
+            marker = new mapboxgl.Marker().setLngLat(coords).addTo(map);
+            map.flyTo({ center: coords, zoom: 14 });
+        }
+    });
+
+    // Use current location
+    document.getElementById("currentLocationBtn").addEventListener("click", () => {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            const coords = [pos.coords.longitude, pos.coords.latitude];
+            const address = `Lat: ${pos.coords.latitude}, Lng: ${pos.coords.longitude}`;
+
+            // Fill hidden fields
+            document.getElementById("longitude").value = coords[0];
+            document.getElementById("latitude").value = coords[1];
+            document.getElementById("addressField").value = address;
+            locationInput.value = address;
+
+            if (marker) marker.remove();
+            marker = new mapboxgl.Marker({ color: "red" }).setLngLat(coords).addTo(map);
+            map.flyTo({ center: coords, zoom: 14 });
+        });
+    });
+</script>
+</body>

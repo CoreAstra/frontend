@@ -1,0 +1,81 @@
+<% layout("layouts/mainLayout") %>
+
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <h3>User Signup</h3>
+
+    <!-- First: form to send OTP -->
+    <form action="/users/send-otp" method="POST" class="mb-4">
+      <div class="mb-3">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label>Phone</label>
+        <input type="text" name="phone" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-secondary w-100">Send OTP</button>
+    </form>
+
+    <!-- Second: actual signup form -->
+    <form action="/users/signup" method="POST" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label>Full Name</label>
+        <input type="text" name="fullName" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label>Phone</label>
+        <input type="text" name="phone" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label>Username</label>
+        <input type="text" name="username" class="form-control" placeholder="3-15 lowercase letters/numbers/underscores" required>
+      </div>
+
+      <div class="mb-3">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label>Confirm Password</label>
+        <input type="password" name="confirmPassword" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label>Aadhar (citizens) / Passport (foreigners)</label>
+        <input type="text" name="aadharNumber" class="form-control" placeholder="Enter Aadhar if citizen">
+        <input type="text" name="passportNumber" class="form-control mt-2" placeholder="Enter Passport if foreigner">
+      </div>
+
+      <div class="mb-3">
+        <label>Gender</label>
+        <select name="gender" class="form-control">
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label>Date of Birth</label>
+        <input type="date" name="dateOfBirth" class="form-control">
+      </div>
+
+      <div class="mb-3">
+        <label>OTP</label>
+        <input type="text" name="otp" class="form-control" required>
+      </div>
+
+      <button class="btn btn-dark w-100">Signup</button>
+    </form>
+  </div>
+</div>

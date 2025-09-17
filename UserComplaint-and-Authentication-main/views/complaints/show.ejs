@@ -1,0 +1,9 @@
+<% layout("layouts/mainLayout") %>
+
+<h2><%= complaint.title %></h2>
+<p><strong>Description:</strong> <%= complaint.description %></p>
+<p><strong>Category:</strong> <%= complaint.category %></p>
+<p><strong>Location:</strong> <%= complaint.location.coordinates[1] %>, <%= complaint.location.coordinates[0] %></p>
+<% if (complaint.image) { %>
+    <img src="<%= complaint.image %>" alt="Complaint Image" style="max-width:400px"/>
+<% } %>

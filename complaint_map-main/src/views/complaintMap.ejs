@@ -1,0 +1,167 @@
+<!-- src/views/complaintMap.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body { font-family: sans-serif; margin: 0; }
+    #map { height: 700px; width:100%; }
+    .filter-container { padding: 10px; text-align: center; background-color: #f8f9fa; border-bottom: 1px solid #dee2e6; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; }
+    .filter-group { margin: 5px 15px; }
+    .filter-group label { font-weight: bold; margin-right: 5px; }
+    .filter-group select { padding: 5px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <div class="filter-container">
+    <div class="filter-group">
+      <label for="state-filter">State:</label>
+      <select id="state-filter">
+        <option value="all">All India</option>
+        <option value="Karnataka">Karnataka</option>
+        <option value="Jharkhand">Jharkhand</option>
+        <option value="Gujarat">Gujarat</option>
+        <option value="Maharashtra">Maharashtra</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="city-filter">City:</label>
+      <select id="city-filter">
+        <option value="all">All Cities</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="category-filter">Category:</label>
+      <select id="category-filter">
+        <option value="all">All</option>
+        <option value="Streetlight">Streetlight</option>
+        <option value="Garbage">Garbage</option>
+        <option value="Water Supply">Water Supply</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="status-filter">Status:</label>
+      <select id="status-filter">
+        <option value="all">All</option>
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Resolved">Resolved</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([20.5937, 78.9629], 5); // Center on India
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    const allMarkers = L.layerGroup().addTo(map);
+
+    const stateFilter = document.getElementById('state-filter');
+    const cityFilter = document.getElementById('city-filter');
+    const categoryFilter = document.getElementById('category-filter');
+    const statusFilter = document.getElementById('status-filter');
+
+    const locations = {
+      "Karnataka": { "Bengaluru": [12.9716, 77.5946], "Mysuru": [12.2958, 76.6552], "Mangaluru": [12.9141, 74.8560] },
+      "Jharkhand": { "Ranchi": [23.3441, 85.3096], "Jamshedpur": [22.8048, 86.2029], "Dhanbad": [23.7957, 86.4304] },
+      "Gujarat": { "Ahmedabad": [23.0225, 72.5714], "Surat": [21.1702, 72.8311], "Vadodara": [22.3072, 73.1812] },
+      "Maharashtra": { "Mumbai": [19.0760, 72.8777], "Pune": [18.5204, 73.8567], "Nagpur": [21.1458, 79.0882] }
+    };
+
+    stateFilter.addEventListener('change', () => {
+      const selectedState = stateFilter.value;
+      cityFilter.innerHTML = '<option value="all">All Cities</option>';
+      if (selectedState && locations[selectedState]) {
+        Object.keys(locations[selectedState]).forEach(city => {
+          const option = document.createElement('option');
+          option.value = city;
+          option.textContent = city;
+          cityFilter.appendChild(option);
+        });
+      }
+      applyFilters();
+    });
+
+    cityFilter.addEventListener('change', () => {
+      const state = stateFilter.value;
+      const city = cityFilter.value;
+      if (city !== 'all' && locations[state]?.[city]) {
+        const coords = locations[state][city];
+        map.setView([coords[0], coords[1]], 12);
+      } else if (state === 'all') {
+        map.setView([20.5937, 78.9629], 5);
+      }
+      applyFilters();
+    });
+
+    async function fetchComplaints(state, city, category, status) {
+      let url = '/api/complaints/all?';
+      if (state && state !== 'all') url += `state=${encodeURIComponent(state)}&`;
+      if (city && city !== 'all') url += `city=${encodeURIComponent(city)}&`;
+      if (category && category !== 'all') url += `category=${encodeURIComponent(category)}&`;
+      if (status && status !== 'all') url += `status=${encodeURIComponent(status)}`;
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
+        return data.data.complaints;
+      } catch (err) {
+        console.error('Error fetching complaints:', err);
+        return [];
+      }
+    }
+
+    async function applyFilters() {
+      const complaints = await fetchComplaints(
+        stateFilter.value, cityFilter.value, categoryFilter.value, statusFilter.value
+      );
+      renderMarkers(complaints);
+    }
+
+    categoryFilter.addEventListener('change', applyFilters);
+    statusFilter.addEventListener('change', applyFilters);
+
+    applyFilters();
+
+    function createCustomIcon(category) {
+      let iconUrl;
+      switch (category) {
+        case 'Streetlight':
+          iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png'; break;
+        case 'Garbage':
+          iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png'; break;
+        case 'Water Supply':
+          iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png'; break;
+        default:
+          iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png'; break;
+      }
+      return new L.Icon({
+        iconUrl, shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+      });
+    }
+
+    function renderMarkers(complaints) {
+      allMarkers.clearLayers();
+      if (!complaints || complaints.length === 0) return;
+      complaints.forEach(c => {
+        if (c.location?.coordinates) {
+          const [lng, lat] = c.location.coordinates;
+          const marker = L.marker([lat, lng], { icon: createCustomIcon(c.category) })
+            .bindPopup(`<b>${c.title}</b><br>Category: ${c.category}<br>Status: ${c.status}<br>Description: ${c.description}<br>${c.location.address ? 'Address: ' + c.location.address : ''}`);
+          allMarkers.addLayer(marker);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

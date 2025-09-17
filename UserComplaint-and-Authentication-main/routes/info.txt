@@ -1,0 +1,30 @@
+/* ============================
+        ROUTER MENU
+   ============================
+
+  ✅ USER AUTH ROUTES (./routes/authRoutes.js)
+    - GET  /signup         → Render user signup page ❇️
+    - POST /signup         → Handle user signup form
+    - GET  /login          → Render user login page ❇️
+    - POST /login          → Handle user login form
+    - POST /send-otp       → Send OTP (JSON API)
+
+  ✅ STAFF AUTH ROUTES (./routes/staffAuthRoutes.js)
+    - GET  /staff/login            → Render staff login page ❇️
+    - POST /staff/login            → Handle staff login form
+    - GET  /staff/add-official     → Render "Add Official" page (SuperAdmin only) ❇️
+    - POST /staff/add-official     → Add new official (SuperAdmin only)
+
+  ✅ COMPLAINT ROUTES (./routes/complaints.js)
+    - GET  /complaints/new         → Show complaint submission form ❇️
+    - POST /complaints             → Submit new complaint (with image upload)
+    - GET  /complaints/:id         → Show details of a specific complaint ❇️
+
+  ✅ PAGE ROUTES (./routes/pageRoutes.js)
+    - GET  /                       → Home / main pages (defined inside pageRoutes)  ❇️
+
+  ✅ ROOT CHECK
+    - GET  /                       → "Complaint System API Running" (basic API check) ❇️
+
+   ============================
+*/

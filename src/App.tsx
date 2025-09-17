@@ -9,6 +9,7 @@ import ReportComplaint from "./pages/ReportComplaint";
 import AllComplaints from "./pages/AllComplaints";
 import YourComplaints from "./pages/YourComplaints";
 import ComplaintView from "./pages/ComplaintView";
+import ComplaintMap from "./pages/ComplaintMap";
 import Profile from "./pages/Profile";
 import PendingDiscussions from "./pages/PendingDiscussions";
 import Login from "./pages/auth/Login";
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/complaints" element={<AllComplaints />} />
           <Route path="/complaints/your" element={<YourComplaints />} />
           <Route path="/complaints/:id" element={<ComplaintView />} />
+          <Route path="/map" element={<ComplaintMap />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/pending" element={<PendingDiscussions />} />
           <Route path="/auth/login" element={<Login />} />

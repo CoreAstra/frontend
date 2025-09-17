@@ -124,6 +124,7 @@ const Dashboard = () => {
                 <Button variant="link" className="px-0" onClick={() => navigate('/pending')}>Resolve complaints</Button>
               )}
               <Button variant="link" className="px-0 font-semibold" onClick={() => navigate('/dashboard')}>Dashboard</Button>
+              <Button variant="link" className="px-0" onClick={() => navigate('/map')}>View Map</Button>
               <Button variant="link" className="px-0" onClick={() => navigate('/profile')}>Profile</Button>
               <Button variant="link" className="px-0" onClick={() => navigate('/')}>logout</Button>
             </div>
@@ -147,6 +148,7 @@ const Dashboard = () => {
                       <Button variant="link" className="justify-start px-0" onClick={() => navigate('/pending')}>Resolve complaints</Button>
                     )}
                     <Button variant="link" className="justify-start px-0 font-semibold" onClick={() => navigate('/dashboard')}>Dashboard</Button>
+                    <Button variant="link" className="justify-start px-0" onClick={() => navigate('/map')}>View Map</Button>
                     <Button variant="link" className="justify-start px-0" onClick={() => navigate('/profile')}>Profile</Button>
                     <Button variant="link" className="justify-start px-0" onClick={() => navigate('/')}>logout</Button>
                   </div>

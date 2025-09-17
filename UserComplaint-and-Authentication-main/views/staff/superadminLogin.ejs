@@ -1,0 +1,25 @@
+<% layout("layouts/mainLayout") %>
+
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <h3>Superadmin Login</h3>
+
+    <% if (typeof error !== 'undefined') { %>
+        <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+
+    <form action="/staff/login" method="POST" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label>Unique ID</label>
+        <input type="text" name="uniqueId" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+
+      <button class="btn btn-dark w-100">Login</button>
+    </form>
+  </div>
+</div>

@@ -56,6 +56,30 @@ const ReportComplaint = () => {
     console.log('Complaint data:', data);
     console.log('Uploaded files:', uploadedFiles);
     
+    // Persist minimal complaint for map visibility (GeoJSON lon,lat)
+    try {
+      const existingRaw = localStorage.getItem('complaints');
+      const existing = existingRaw ? JSON.parse(existingRaw) : [];
+      const [latStr, lonStr] = (data.location || '').split(',').map((v) => v?.trim());
+      const lat = parseFloat(latStr);
+      const lon = parseFloat(lonStr);
+      if (!isNaN(lat) && !isNaN(lon)) {
+        const entry = {
+          title: data.issueName,
+          description: data.description,
+          category: data.sector,
+          location: {
+            type: 'Point',
+            coordinates: [lon, lat],
+            address: 'User submitted location',
+          },
+          status: 'Pending',
+          createdAt: new Date().toISOString(),
+        };
+        localStorage.setItem('complaints', JSON.stringify([entry, ...existing]));
+      }
+    } catch {}
+
     toast({
       title: "Complaint Submitted Successfully",
       description: "Your issue has been reported and will be reviewed by the relevant department.",

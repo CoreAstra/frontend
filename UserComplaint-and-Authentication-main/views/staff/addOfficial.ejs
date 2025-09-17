@@ -1,0 +1,98 @@
+<% layout("layouts/mainLayout") %>
+
+<div class="container">
+    <h1>Add New Official</h1>
+    <div id="message" class="message-area" style="display:none;"></div>
+
+    <form id="addOfficialForm" action="/staff/add-official" method="POST">
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Initial Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+                <option value="" disabled selected>Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="dateOfBirth">Date of Birth</label>
+            <input type="date" id="dateOfBirth" name="dateOfBirth">
+        </div>
+
+        <div class="form-group">
+            <label for="aadharNumber">Aadhar Number</label>
+            <input type="text" id="aadharNumber" name="aadharNumber">
+        </div>
+
+        <div class="form-group">
+            <label for="department">Department</label>
+            <select id="department" name="department" required>
+                <option value="" disabled selected>Select Department</option>
+                <option value="Garbage and Cleaning Department">Garbage and Cleaning</option>
+                <option value="Roads and Buildings Department">Roads and Buildings</option>
+                <option value="Water Supply Department">Water Supply</option>
+                <option value="Health Department">Health</option>
+            </select>
+        </div>
+
+        <!-- Hardcoded dropdowns -->
+        <div class="form-group">
+            <label for="state">State</label>
+            <select id="state" name="state" required>
+                <option value="" disabled selected>Select State</option>
+                <option value="Jharkhand">Jharkhand</option>
+                <option value="Bihar">Bihar</option>
+                <option value="West Bengal">West Bengal</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Maharashtra">Maharashtra</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="city">City</label>
+            <select id="city" name="city" required>
+                <option value="" disabled selected>Select City</option>
+                <option value="Ranchi">Ranchi</option>
+                <option value="Patna">Patna</option>
+                <option value="Kolkata">Kolkata</option>
+                <option value="Bengaluru">Bengaluru</option>
+                <option value="Mumbai">Mumbai</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="locality">Locality</label>
+            <select id="locality" name="locality" required>
+                <option value="" disabled selected>Select Locality</option>
+                <option value="Main Road">Main Road</option>
+                <option value="Boring Road">Boring Road</option>
+                <option value="Salt Lake">Salt Lake</option>
+                <option value="Koramangala">Koramangala</option>
+                <option value="Andheri">Andheri</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Official</button>
+    </form>
+</div>
